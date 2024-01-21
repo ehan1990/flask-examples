@@ -1,6 +1,7 @@
 import datetime
 import logging
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 from endpoints.bad_url_endpoint import bad_url_blueprint
 from libs.mongo_service import MongoService
@@ -16,6 +17,8 @@ VERSION = "1.0.0"
 
 
 app = Flask(__name__)
+CORS(app)
+
 app.register_blueprint(bad_url_blueprint)
 
 

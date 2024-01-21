@@ -40,48 +40,9 @@ def delete_url(url: str):
 
 
 @url_cmd.command(name="ls")
-def show_urls():
-    api_url = f"{constants.LOCALHOST_ROOT}/urls"
+@click.option('--limit', required=False, default=5)
+@click.option('--page', required=False, default=1)
+def show_urls(limit, page):
+    api_url = f"{constants.LOCALHOST_ROOT}/urls?limit={limit}&page={page}"
     res = call_api(api_url, "GET")
     print(json.dumps(res, indent=2))
-
-#
-# @stock_cmd.command(name="add-sp500")
-# @click.option('--count', "count", default=1)
-# def add_sp500(count):
-#     with open("data/sp500.json") as f:
-#         data = json.loads(f.read())
-#
-#     if not count:
-#         count = len(data)
-#     count = int(count)
-#
-#     for i, d in enumerate(data):
-#         if i == count:
-#             break
-#         ticker = d["ticker"]
-#         print(f"{i+1}: inserting {ticker}")
-#         stock_db = stock_service.get_one_stock_from_api(ticker)
-#         MongoService.upsert(COL_STOCKS, stock_db.ticker, stock_db.__dict__)
-#
-#     print(f"inserted {count} stocks")
-#
-#
-# @stock_cmd.command(name="ls")
-# def show_all_stocks():
-#     data = MongoService.get_all(COL_STOCKS)
-#     print(json.dumps(data, indent=2))
-#
-#
-# @stock_cmd.command(name="del")
-# @click.option('--ticker', required=True)
-# def del_stock(ticker):
-#     stock_service.delete_one_stock(ticker)
-#
-#
-# @stock_cmd.command(name="delall")
-# def del_all_stock():
-#     stocks = MongoService.get_all(COL_STOCKS)
-#     for stock in stocks:
-#         ticker = stock.get("ticker")
-#         stock_service.delete_one_stock(ticker)

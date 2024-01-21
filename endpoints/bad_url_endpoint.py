@@ -13,8 +13,8 @@ def check_if_bad_url_exists(url: str):
     return True
 
 
-def get_all_bad_urls():
-    res = MongoService.query(constants.COL_BAD_URL)
+def get_all_bad_urls(limit, page):
+    res = MongoService.query(constants.COL_BAD_URL, limit=limit, page=page)
     return res
 
 
@@ -44,7 +44,19 @@ def add_ls_url_endpoint():
         res = {"msg": f"added {url}"}
         return jsonify(res)
     elif request.method == "GET":
-        res = get_all_bad_urls()
+        page = request.args.get("page")
+        limit = request.args.get("limit")
+
+        if page is None:
+            page = 1
+        else:
+            page = int(page)
+        if limit is None:
+            limit = 5
+        else:
+            limit = int(limit)
+        res = get_all_bad_urls(limit, page)
+
         return jsonify(res)
 
 
