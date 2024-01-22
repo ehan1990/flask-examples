@@ -51,6 +51,8 @@ def add_ls_url_endpoint():
             page = 1
         else:
             page = int(page)
+            if page <= 0:
+                page = 1
         if limit is None:
             limit = 5
         else:
